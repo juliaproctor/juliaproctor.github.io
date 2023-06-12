@@ -1,3 +1,2 @@
-# juliaproctor.github.io
-
+# WELCOME TO MY WEBSITE
 Hi it's Jules!
