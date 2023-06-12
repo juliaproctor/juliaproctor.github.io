@@ -1,2 +1,2 @@
-# WELCOME TO MY WEBSITE
+# Welcome :)
 Hi it's Jules!
