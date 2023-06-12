@@ -1,3 +1,3 @@
 # juliaproctor.github.io
 
-"Hi it's Jules!"
+Hi it's Jules!
