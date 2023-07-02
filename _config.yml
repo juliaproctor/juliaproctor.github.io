@@ -53,3 +53,9 @@ plugins:
 #   - vendor/cache/
 #   - vendor/gems/
 #   - vendor/ruby/
+
+
+# --- List of links in the navigation bar --- #
+header_pages:
+  - about.md
+  - controls.md

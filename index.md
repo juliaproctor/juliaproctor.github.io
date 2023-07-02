@@ -6,3 +6,5 @@ layout: home
 ---
 
 THIS IS YOUR HOME
+
+Click [here](/about) to learn about me
