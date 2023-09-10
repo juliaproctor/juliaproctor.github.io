@@ -56,4 +56,4 @@ plugins:
 # --- List of links in the navigation bar --- #
 header_pages:
   - about.md
-  - Projects.md
+  - projects.md
