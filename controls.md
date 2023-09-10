@@ -1,14 +1,9 @@
 ---
 layout: page
-title: Controls
-permalink: /controls/
+title: Projects
+permalink: /projects/
 ---
 
-This is my page about controls
+This is my page about my projects
 
-# Lab 1
-
-[Here is lab 1](lab1)
-
-
-# Lab 2
+[PID control for a 1Dof helicopter](helicopter)

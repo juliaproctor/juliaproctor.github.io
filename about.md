@@ -6,10 +6,9 @@ permalink: /about/
 
 <!--  bundle exec jekyll serve -->
 
-This is my webside 
+This is my website.
 
-`this is some code i wrote`
+This is an overview of me.
 
 My name is [jules](julesproctor.com)
 
-![some description](PHYS_4410_Project_jep339.pdf "some description")
