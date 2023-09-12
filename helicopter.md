@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Controls Lab 1
+title: PID for a 1-DoF Helicopter
 permalink: /projects/helicopter
 usemathjax: true
 ---
@@ -173,6 +173,5 @@ Additional methods of control design include frequency-domain control design and
 This project was adapted from a former ECE 4760 project designed by Hunter Adams and Bruce Land. I would like to acknowledge Hunter Adams for providing the inspiration for the project as well as the necessary hardware components. I also wish to acknowledge the support of my lab advisor Professor Bazarov for guiding me through the PHYS 4410 project and answering my questions throughout the process. 
 
 ## BIBLIOGRAPHY
-
 
 
