@@ -197,36 +197,29 @@ where $\Vec{F}_g$ is the force due to gravity and $\ell$ is the length of the ro
 
 Derivative control addresses this phenomenon by reacting to the rate of change of the error. If the error is increasing or decreasing rapidly, derivative control will cause the total output PWM signal to adjust accordingly. 
 
-Even with PID control, the derivative term lost robustness at higher angles. For a reference angle of $125^{\cric}$ the output angle stabilized within $\pm$ 2$^{\circ}$ of the desired angle. For a reference of $135^{\circ}$ the output angle stabilized within $\pm$ 10$^{\circ}$, demonstrating it was much more sensitive to noise. This again can be related to the free body diagram in Fig.~\ref{fig:fbd}. The larger angle corresponded with less gravitational torque, causing the output thrust to be the dominating term. Due to this, the output PWM signal was more sensitive to small disturbances, such as air gusts, causing a higher amplitude of oscillations. 
+Even with PID control, the derivative term lost robustness at higher angles. For a reference angle of $125^{\circ}$ the output angle stabilized within $\pm 2^{\circ}$ of the desired angle. For a reference of $135^{\circ}$ the output angle stabilized within $\pm 10^{\circ}$, demonstrating it was much more sensitive to noise. This again can be related to the free body diagram in Fig.~\ref{fig:fbd}. The larger angle corresponded with less gravitational torque, causing the output thrust to be the dominating term. Due to this, the output PWM signal was more sensitive to small disturbances, such as air gusts, causing a higher amplitude of oscillations. 
 
 The derivative term was also shown to introduce additional noise into the system. This can be explained mathematically. Consider a noisy error represented as a sine wave with frequency $\omega$ and amplitude $e_0$:
 
-\begin{equation}
-    e(t) = e_0 \sin (\omega t).
-\end{equation}
+$e(t) = e_0 \sin (\omega t).$        
 
 The contribution from derivative control will therefore be
 
-\begin{equation}
-    \frac{d}{dt}e(t) = e_0 \omega \sin(\omega t).
-\end{equation}
+$\frac{d}{dt}e(t) = e_0 \omega \sin(\omega t).$
+
 Thus for high-frequency signals, such as noise, adding derivative control will increase the amplitude by a factor of the frequency $\omega$. The moving window average allowed the noise to be reduced via a software implementation and was a simple way to effectively implement D without changing the circuitry. However, considering the derivative control is amplified by a factor $\omega$, implementing a low pass filter would effectively reduce additional noise introduced by differentiating. 
 
 A low-pass filter allows the low-frequency signals to be captured while throwing out high frequencies. The low-frequency oscillations of the potentiometer are more likely to correspond with the actual state of the physical system, and therefore are necessary when calculating error. On the other hand, high-frequency signals are more likely to correspond to noise, and therefore are unwanted. Implementing low-pass filters is a common way to reduce noise in a PID controller in which derivative control is necessary.
 
-\section{Conclusion}
-This paper discussed the method and results of implementing a PID controller on a 1-DoF helicopter. The PI controller alone was effective for angles up 110$^{\circ}$. Adding derivative control increased robustness, allowing it to be effective up to 135$^{\circ}$. Methods to deal with noise introduced by derivative control, including moving-window-average and low-pass filters, were discussed.
+## Conclusion
+This paper discussed the method and results of implementing a PID controller on a 1-DoF helicopter. The PI controller alone was effective for angles up $110^{\circ}$. Adding derivative control increased robustness, allowing it to be effective up to $135^{\circ}$. Methods to deal with noise introduced by derivative control, including moving-window-average and low-pass filters, were discussed.
 
 Additional methods of control design include frequency-domain control design and pole placement. However, these methods require linear systems. Since the system was shown to be nonlinear ($\sim \sin \theta$), these methods were not of use. PID tuning allows for one to design a controller without relying on a physical model of the system.  The project ultimately demonstrated how PID controllers are an effective way to implement feedback control in a system where the physical hardware is accessible and can be tuned. 
 
-\begin{acknowledgments}
+## Acknowledgements
 This project was adapted from a former ECE 4760 project designed by Hunter Adams and Bruce Land. I would like to acknowledge Hunter Adams for providing the inspiration for the project as well as the necessary hardware components. I also wish to acknowledge the support of my lab advisor Professor Bazarov for guiding me through the PHYS 4410 project and answering my questions throughout the process. 
-\end{acknowledgments}
-\clearpage
-\printbibliography
 
-
-\end{document}
+## BIBLIOGRAPHY
 
 
 
