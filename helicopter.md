@@ -4,7 +4,6 @@ title: PID for a 1-DoF Helicopter
 permalink: /projects/helicopter
 usemathjax: true
 ---
-# test 1
 ## Abstract
 A Proportional-Integral-Derivative (PID) controller was designed for a one-degree-of-freedom helicopter allowed to rotate by an angle $$\theta$$ in a vertical plane. The controller was designed using an Arduino Uno such that the user can specify the desired angle at which the helicopter is to fly. The proportional, integral, and derivative gains were chosen such that the range at which the controller works is maximized. The project ultimately demonstrated how PID controllers are an effective way to implement feedback control in a system where the physical hardware is accessible and can be tuned. 
 
@@ -24,14 +23,14 @@ $$ \text{control output} = K_pe(t) + K_i \int dt(e(t)) + K_d  \frac{d}{dt}e(t)$$
  A controller's effect on the system can be characterized by 4 quantitative measurements: steady-state error, rise time, overshoot, and settling time, illustrated in Fig. 2. 
  
 ![](/images/helicopter/defs.png)
-*Figure 2. Plot illustrating definitions of overshoot, rise time, settling time, and steady-state error. Adapted from \cite{defs}.*
+*Figure 2. Plot illustrating definitions of overshoot, rise time, settling time, and steady-state error. Adapted from [4].*
 
-The steady-state error is defined as the difference between the steady-state response of the system and the reference input. Rise time is quantified by the time it takes to increase to the final steady-state value. Overshoot is the difference between the highest peak and the desired output. Settling time is defined as the time it takes the output to settle to within 2% of the final value \cite{defs}. 
+The steady-state error is defined as the difference between the steady-state response of the system and the reference input. Rise time is quantified by the time it takes to increase to the final steady-state value. Overshoot is the difference between the highest peak and the desired output. Settling time is defined as the time it takes the output to settle to within 2% of the final value [4]. 
 
 ## Apparatus and Circuitry
 ### Mechanical Apparatus
 
-The apparatus for the mechanical implementation of the helicopter is shown in Fig. 3. The helicopter was constructed of a motor (part A) hot glued to the end of a stiff wooden rod (part B) such that the rotor blades are parallel to the wooden rod. The other end of the wooden rod was hot-glued to a knob (part C) that could interface with a potentiometer (part D). The subsystem of parts A, B, C, and D was provided pre-assembled by V. Hunter Adams \cite{hunter}. 
+The apparatus for the mechanical implementation of the helicopter is shown in Fig. 3. The helicopter was constructed of a motor (part A) hot glued to the end of a stiff wooden rod (part B) such that the rotor blades are parallel to the wooden rod. The other end of the wooden rod was hot-glued to a knob (part C) that could interface with a potentiometer (part D). The subsystem of parts A, B, C, and D was provided pre-assembled by V. Hunter Adams [1]. 
 
 ![](/images/helicopter/helicopter1.png)
 *Figure 3. Apparatus for project, showing the DC helicopter motor and blades (A), wooden rod (B), black knob to interface with potentiometer (C), 10 $$k \Omega$$ potentiometer (D), potentiometer mounting bracket (E), 4x2x6 wooden block (F).*
@@ -43,7 +42,7 @@ The mounting system was constructed of a metal bracket (part E) that could house
 The first aspect of generating the circuitry was to enable the motor to spin at different rates based on an input signal. This was accomplished using the circuit diagram shown in black in Fig. 4. The current flows from the power source on the right, through the motor, and to ground. The PWM input signal from the Arduino determines how much current is enabled to flow through the transistor and therefore the motor. Thus the circuit allows the Arduino to be programmed such that it can output a PWM signal that directly corresponds to the motor spin speed. 
 
 ![](/images/helicopter/circuit.png)
-*Figure 4. Circuit designed to spin the induce variable motor spin based on an input pulse-width-modular (PWM) signal, pulled from \cite{motor}. The values for the electrical components are tabulated in table 1.*
+*Figure 4. Circuit designed to spin the induce variable motor spin based on an input pulse-width-modular (PWM) signal, pulled from [2]. The values for the electrical components are tabulated in table I.*
 
 The second aspect involved providing the Arduino with an input signal that encoded information about the helicopter angle. The black knob is securely mounted onto the potentiometer such that when the helicopter rotates by an angle $$\theta$$ the potentiometer is rotated by an equivalent angle. Thus the potentiometer corresponds linearly with the helicopter angle. The red portion of the circuit in Fig. 4 shows the potentiometer circuit. The potentiometer outputs an analog signal that is converted to digital using the Analog-to-Digital Converter (ADC) built-in on the Arduino. 
 
@@ -66,7 +65,7 @@ The second aspect involved providing the Arduino with an input signal that encod
     <td>$$270\Omega$$</td>
   </tr>
 </table>
-*Table 1. Electrical Components*
+*Table I. Electrical Components*
 
 The digital values output by the potentiometer were mapped to corresponding angles by manually taking data points while the motor was off. The helicopter was held at $$0^{\circ}$$, $$90^{\circ}$$, and $$180^{\circ}$$ and the corresponding potentiometer value was read from the Arduino. The data was fit to a linear line of best fit, as shown in Fig. 5.
 
@@ -76,7 +75,7 @@ The digital values output by the potentiometer were mapped to corresponding angl
 The mechanical apparatus, circuitry, and potentiometer mapping described above are sufficient to design a controller on the Arduino. The angle is encoded by an analog potentiometer signal, sent through the ADC, and converted to an angle via the potentiometer mapping function. The PWM signal controls the amount of current that passes through the motor. Thus a controller that takes in the potentiometer signal and outputs a PWM signal can be designed to enable the helicopter's hover angle to match a user-defined reference angle. 
 
 ## Implementation of PID
-The recipe used to implement the controller was adapted from the advice provided by \cite{recipe}. The recipe employs a "trial and error" method in which values are chosen until the desired outcome is achieved. The proportional gain was set whilst the integral and derivative gains were set to zero. The integral gain was then set, and lastly the derivative gain.  The integral gain was chosen for steady-state error to go to zero. The derivative term was incorporated to minimize overshoot, ultimately allowing the controller to be more robust. 
+The recipe used to implement the controller was adapted from the advice provided by [3]. The recipe employs a "trial and error" method in which values are chosen until the desired outcome is achieved. The proportional gain was set whilst the integral and derivative gains were set to zero. The integral gain was then set, and lastly the derivative gain.  The integral gain was chosen for steady-state error to go to zero. The derivative term was incorporated to minimize overshoot, ultimately allowing the controller to be more robust. 
 ### Proportional Term
 The proportional gain was set first by finding a gain that was small enough for oscillations to settle within 3.0 seconds and simultaneously amount to the smallest rise time within bounds set by the settling time requirement. A reference angle of $$90^{\circ}$$ was used when determining a value for $$K_p$$. Figures 6, 7, and 8, show corresponding output for $$K_p$$ values of 50, 100, and 200, a reference angle of $$90^{\circ}$$. Other gains were experimented with, but these specific gains were selected to illustrate the key findings. 
 
@@ -112,7 +111,7 @@ When the derivative term was initially added for a value of $$K_d = 1$$, the out
 ![](/images/helicopter/pwms.png)
 *Figure 11. Proportional, integral, and derivative contributions (blue, red, gold) and the total output signal (black) versus time. Proportional and integral contributions have very little noise. Derivative contribution is extremely noisy and yielding an average value of approximately zero for the duration of data collection.*
 
-The noise of the derivative term was reduced by applying a moving window average to the error prior to differentiating it. Rather than taking a given data point as the absolute value, the value for at a given instant is given by the average of the previous $$n$$ measurements, where $$n$$ is the size of the "window". This has the effect of smoothing noisy data \cite{mwa}. Fig. 12 shows the result of applying a moving window average of size $$n = 6$$ to the data. 
+The noise of the derivative term was reduced by applying a moving window average to the error prior to differentiating it. Rather than taking a given data point as the absolute value, the value for at a given instant is given by the average of the previous $$n$$ measurements, where $$n$$ is the size of the "window". This has the effect of smoothing noisy data [5]. Fig. 12 shows the result of applying a moving window average of size $$n = 6$$ to the data. 
 
 ![](/images/helicopter/smooth.png)
 *Figure 12. Output angle vs time for $$K_p = 100$$, $$K_i = 0.9$$, and $$K_d = 500$$. The raw data form of the output angle (blue) is extremely noise, with high and frequent spikes. The output angle to which a size $$n = 6$$ moving window average was applied (gold) is much smoother, with smaller and less frequent peaks.*
@@ -130,7 +129,7 @@ The PID controller for a reference of $$135^{\circ}$$ is shown in Fig. 14. Thoug
 
 
 ## Discussion
-The effectiveness of the P, PI, and PID controllers discussed previously are summarized in Table 2.
+The effectiveness of the P, PI, and PID controllers discussed previously are summarized in Table II.
 
 <table style="width:100%">
   <tr>
@@ -154,9 +153,9 @@ The effectiveness of the P, PI, and PID controllers discussed previously are sum
     <td>$$0^{\circ} - 135^{\circ}$$</td>
   </tr>
 </table>
-*Table 2. Effectiveness of Different Controllers*
+*Table II. Effectiveness of Different Controllers*
 
-Proportional control was insufficient in producing an output angle that matched the reference. As the error decreased, the output PWM signal decreased proportionally. In this system, the steady-state error occurs at a point when the thrust torque provided by the motor is in equilibrium with the torque due to gravity. For example, Fig. 15 shows the output angle and the output PWM signal on the same plot for $$K_p = 100$$. At around 2.0 seconds, we see that a PWM signal of 100 causes the motor to thrust at a force exactly equal to the torque due to gravity when the angle is at around $$25^{\circ}$$. Since the two are in equilibrium, the error is constant, and the output PWM signal therefore remains fixed. This phenomenon will occur regardless of the reference angle or the proportional gain \cite{ess}. Integral control must be introduced to eliminate steady-state error. 
+Proportional control was insufficient in producing an output angle that matched the reference. As the error decreased, the output PWM signal decreased proportionally. In this system, the steady-state error occurs at a point when the thrust torque provided by the motor is in equilibrium with the torque due to gravity. For example, Fig. 15 shows the output angle and the output PWM signal on the same plot for $$K_p = 100$$. At around 2.0 seconds, we see that a PWM signal of 100 causes the motor to thrust at a force exactly equal to the torque due to gravity when the angle is at around $$25^{\circ}$$. Since the two are in equilibrium, the error is constant, and the output PWM signal therefore remains fixed. This phenomenon will occur regardless of the reference angle or the proportional gain [6]. Integral control must be introduced to eliminate steady-state error. 
 
 ![](/images/helicopter/Kpvoltage.png)
 *Figure 15. Output angle in degrees and PWM signal versus time for a P controller with $$K_p = 100$$ and reference of $$90^{\circ}$$. At approximately 3 seconds, the thurst torque is in equilibrium with the gravitational torque, and the PWM signal and error therefore remain perpetually fixed with a nonzero steady-state error.*
@@ -200,6 +199,17 @@ Additional methods of control design include frequency-domain control design and
 ## Acknowledgements
 This project was adapted from a former ECE 4760 project designed by Hunter Adams and Bruce Land. I would like to acknowledge Hunter Adams for providing the inspiration for the project as well as the necessary hardware components. I also wish to acknowledge the support of my lab advisor Professor Bazarov for guiding me through the PHYS 4410 project and answering my questions throughout the process. 
 
-## BIBLIOGRAPHY
+## Bibliography
+[1] V. Hunter Adams. “PID of a 1D Helicopter”. In: *Cornell University ().*
 
+[2] *Arduino - DC Motor.* Available at [link](https://www.tutorialspoint.com/arduino/arduino_dc_motor)
+
+[3] *Driver PID Settings.* Available at [link](https://www.thorlabs.com/newgrouppage9.cfm?objectgroup_id=9013)
+
+[4] B. Goodwine. “AME 437: Control Systems Engineering”.
+In: *University of Notre Dame* (2000).
+
+[5] Jose Luise Guinon et al. *Moving Average and SavitzkiGolay Smoothing Filters Using Mathcad.* Tech. rep. Valencia, Spain.
+
+[6] *Steady State Error.* Available at [link](https://www.sciencedirect.com/topics/engineering/steady-state-error)
 
