@@ -22,7 +22,7 @@ author: Jules Proctor
 navbar-links:
   About Me: "aboutme"
   Projects:
-    - PID Controller: "/projects/helicopter"
+    - PID Heli: "/projects/helicopter"
 
 ################
 # --- Logo --- #
@@ -47,8 +47,8 @@ round-avatar: true
 # Select the social network links that you want to show in the footer.
 # You can change the order that they show up on the page by changing the order here.
 # Uncomment the links you want to show and add your information to each one.
-# social-network-links:
-#   email: "someone@example.com"
+social-network-links:
+  # email: "someone@example.com"
 #   rss: true  # remove this line if you don't want to show an RSS link at the bottom
 #   facebook: deanattali
 #   github: daattali
@@ -57,11 +57,11 @@ round-avatar: true
 #   youtube: c/daattali
 # #  medium: yourname
 #  reddit: yourname
-#  linkedin: daattali
+ linkedin: julia-proctor
 #  xing: yourname
 #  stackoverflow: "3943160/daattali"
 #  snapchat: deanat78
-#  instagram: deanat78
+#  instagram: julesproctor
 #  spotify: yourname
 #  telephone: +14159998888
 #  steam: deanat78
@@ -79,7 +79,7 @@ round-avatar: true
 
 # If you want your website to generate an RSS feed, provide a description
 # The URL for the feed will be https://<your_website>/feed.xml
-rss-description: This website is a virtual proof that I'm awesome
+# rss-description: This website is a virtual proof that I'm awesome
 
 ###########################
 # --- General options --- #
