@@ -7,10 +7,10 @@ usemathjax: true
 ## Abstract
 A Proportional-Integral-Derivative (PID) controller was designed for a one-degree-of-freedom helicopter allowed to rotate by an angle $$\theta$$ in a vertical plane. The controller was designed using an Arduino Uno such that the user can specify the desired angle at which the helicopter is to fly. The proportional, integral, and derivative gains were chosen such that the range at which the controller works is maximized. The project ultimately demonstrated how PID controllers are an effective way to implement feedback control in a system where the physical hardware is accessible and can be tuned. 
 
-## Introduction
+## I. Introduction
 Feedback controllers allow systems to be modified such that they output a controlled variable that tracks a user-defined reference. The output of the system is fed back into the controller, allowing the controller to calculate the error between the reference input and the system output. The system for this project is a one-degree-of-freedom helicopter that rotates by an angle $$\theta$$. A proportional-integral-derivative (PID) controller was implemented and tuned to allow the user to input a reference angle that the system effectively tracks. The necessary background required for this paper is discussed is in Section II. Section III discusses the mechanical apparatus as well as the circuitry that enabled the controller to be designed. In Section IV, the method by which the gains for the PID controller are selected is discussed, as well as the corresponding results. Section V provides explanations to the phenomenon discovered in Section IV. Section VI concludes the objective and findings of the project.  
 
-## Background
+## II. Background
  The objective was to design a controller that would enable the helicopter to fly to a user-defined input angle. 
 
 ![](/images/helicopter/blockDiagram.png)
@@ -27,7 +27,7 @@ $$ \text{control output} = K_pe(t) + K_i \int dt(e(t)) + K_d  \frac{d}{dt}e(t)$$
 
 The steady-state error is defined as the difference between the steady-state response of the system and the reference input. Rise time is quantified by the time it takes to increase to the final steady-state value. Overshoot is the difference between the highest peak and the desired output. Settling time is defined as the time it takes the output to settle to within 2% of the final value [4]. 
 
-## Apparatus and Circuitry
+## III. Apparatus and Circuitry
 ### Mechanical Apparatus
 
 The apparatus for the mechanical implementation of the helicopter is shown in Fig. 3. The helicopter was constructed of a motor (part A) hot glued to the end of a stiff wooden rod (part B) such that the rotor blades are parallel to the wooden rod. The other end of the wooden rod was hot-glued to a knob (part C) that could interface with a potentiometer (part D). The subsystem of parts A, B, C, and D was provided pre-assembled by V. Hunter Adams [1]. 
@@ -74,7 +74,7 @@ The digital values output by the potentiometer were mapped to corresponding angl
 
 The mechanical apparatus, circuitry, and potentiometer mapping described above are sufficient to design a controller on the Arduino. The angle is encoded by an analog potentiometer signal, sent through the ADC, and converted to an angle via the potentiometer mapping function. The PWM signal controls the amount of current that passes through the motor. Thus a controller that takes in the potentiometer signal and outputs a PWM signal can be designed to enable the helicopter's hover angle to match a user-defined reference angle. 
 
-## Implementation of PID
+## IV. Implementation of PID
 The recipe used to implement the controller was adapted from the advice provided by [3]. The recipe employs a "trial and error" method in which values are chosen until the desired outcome is achieved. The proportional gain was set whilst the integral and derivative gains were set to zero. The integral gain was then set, and lastly the derivative gain.  The integral gain was chosen for steady-state error to go to zero. The derivative term was incorporated to minimize overshoot, ultimately allowing the controller to be more robust. 
 ### Proportional Term
 The proportional gain was set first by finding a gain that was small enough for oscillations to settle within 3.0 seconds and simultaneously amount to the smallest rise time within bounds set by the settling time requirement. A reference angle of $$90^{\circ}$$ was used when determining a value for $$K_p$$. Figures 6, 7, and 8, show corresponding output for $$K_p$$ values of 50, 100, and 200, a reference angle of $$90^{\circ}$$. Other gains were experimented with, but these specific gains were selected to illustrate the key findings. 
@@ -128,7 +128,7 @@ The PID controller for a reference of $$135^{\circ}$$ is shown in Fig. 14. Thoug
 
 
 
-## Discussion
+## V. Discussion
 The effectiveness of the P, PI, and PID controllers discussed previously are summarized in Table II.
 
 <table style="width:100%">
@@ -191,7 +191,7 @@ Thus for high-frequency signals, such as noise, adding derivative control will i
 
 A low-pass filter allows the low-frequency signals to be captured while throwing out high frequencies. The low-frequency oscillations of the potentiometer are more likely to correspond with the actual state of the physical system, and therefore are necessary when calculating error. On the other hand, high-frequency signals are more likely to correspond to noise, and therefore are unwanted. Implementing low-pass filters is a common way to reduce noise in a PID controller in which derivative control is necessary.
 
-## Conclusion
+## VI. Conclusion
 This paper discussed the method and results of implementing a PID controller on a 1-DoF helicopter. The PI controller alone was effective for angles up $$110^{\circ}$$. Adding derivative control increased robustness, allowing it to be effective up to $$135^{\circ}$$. Methods to deal with noise introduced by derivative control, including moving-window-average and low-pass filters, were discussed.
 
 Additional methods of control design include frequency-domain control design and pole placement. However, these methods require linear systems. Since the system was shown to be nonlinear ($$\sim \sin \theta$$), these methods were not of use. PID tuning allows for one to design a controller without relying on a physical model of the system.  The project ultimately demonstrated how PID controllers are an effective way to implement feedback control in a system where the physical hardware is accessible and can be tuned. 
