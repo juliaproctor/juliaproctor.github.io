@@ -4,7 +4,7 @@ title: PID for a 1-DoF Helicopter
 permalink: /projects/helicopter
 usemathjax: true
 ---
-
+# test 1
 ## Abstract
 A Proportional-Integral-Derivative (PID) controller was designed for a one-degree-of-freedom helicopter allowed to rotate by an angle $$\theta$$ in a vertical plane. The controller was designed using an Arduino Uno such that the user can specify the desired angle at which the helicopter is to fly. The proportional, integral, and derivative gains were chosen such that the range at which the controller works is maximized. The project ultimately demonstrated how PID controllers are an effective way to implement feedback control in a system where the physical hardware is accessible and can be tuned. 
 
