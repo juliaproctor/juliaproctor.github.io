@@ -31,21 +31,21 @@ The steady-state error is defined as the difference between the steady-state res
 ## Apparatus and Circuitry
 ### Mechanical Apparatus
 
-The apparatus for the mechanical implementation of the helicopter is shown in Fig.~\ref{fig:helicopter}. The helicopter was constructed of a motor (part A) hot glued to the end of a stiff wooden rod (part B) such that the rotor blades are parallel to the wooden rod. The other end of the wooden rod was hot-glued to a knob (part C) that could interface with a potentiometer (part D). The subsystem of parts A, B, C, and D was provided pre-assembled by V. Hunter Adams \cite{hunter}. 
+The apparatus for the mechanical implementation of the helicopter is shown in Fig. 3. The helicopter was constructed of a motor (part A) hot glued to the end of a stiff wooden rod (part B) such that the rotor blades are parallel to the wooden rod. The other end of the wooden rod was hot-glued to a knob (part C) that could interface with a potentiometer (part D). The subsystem of parts A, B, C, and D was provided pre-assembled by V. Hunter Adams \cite{hunter}. 
 
 ![](/images/helicopter/helicopter1.png)
 *Figure 3. Apparatus for project, showing the DC helicopter motor and blades (A), wooden rod (B), black knob to interface with potentiometer (C), 10 $$k \Omega$$ potentiometer (D), potentiometer mounting bracket (E), 4x2x6 wooden block (F).*
 
 
-The mounting system was constructed of a metal bracket (part E) that could house the potentiometer in a stable position. The metal bracket was screwed onto a plank of wood (part F). Finally, the black knob was tightened onto the potentiometer, thus generating a full assembly of the mechanical components, as shown in Fig.~\ref{fig:helicopter}. The mechanical system allowed the helicopter to rotate in the plane of the page by an angle $$\theta$$. 
+The mounting system was constructed of a metal bracket (part E) that could house the potentiometer in a stable position. The metal bracket was screwed onto a plank of wood (part F). Finally, the black knob was tightened onto the potentiometer, thus generating a full assembly of the mechanical components, as shown in Fig. 3. The mechanical system allowed the helicopter to rotate in the plane of the page by an angle $$\theta$$. 
 
 ### Electrical Circuitry
-The first aspect of generating the circuitry was to enable the motor to spin at different rates based on an input signal. This was accomplished using the circuit diagram shown in black in Fig.~\ref{fig:circuit}. The current flows from the power source on the right, through the motor, and to ground. The PWM input signal from the Arduino determines how much current is enabled to flow through the transistor and therefore the motor. Thus the circuit allows the Arduino to be programmed such that it can output a PWM signal that directly corresponds to the motor spin speed. 
+The first aspect of generating the circuitry was to enable the motor to spin at different rates based on an input signal. This was accomplished using the circuit diagram shown in black in Fig. 4. The current flows from the power source on the right, through the motor, and to ground. The PWM input signal from the Arduino determines how much current is enabled to flow through the transistor and therefore the motor. Thus the circuit allows the Arduino to be programmed such that it can output a PWM signal that directly corresponds to the motor spin speed. 
 
 ![](/images/helicopter/circuit.png)
-*Figure 4. Circuit designed to spin the induce variable motor spin based on an input pulse-width-modular (PWM) signal, pulled from \cite{motor}. The values for the electrical components are tabulated in table~\ref{tab:electrical}.*
+*Figure 4. Circuit designed to spin the induce variable motor spin based on an input pulse-width-modular (PWM) signal, pulled from \cite{motor}. The values for the electrical components are tabulated in table 1.*
 
-The second aspect involved providing the Arduino with an input signal that encoded information about the helicopter angle. The black knob is securely mounted onto the potentiometer such that when the helicopter rotates by an angle $$\theta$$ the potentiometer is rotated by an equivalent angle. Thus the potentiometer corresponds linearly with the helicopter angle. The red portion of the circuit in Fig.~\ref{fig:circuit} shows the potentiometer circuit. The potentiometer outputs an analog signal that is converted to digital using the Analog-to-Digital Converter (ADC) built-in on the Arduino. 
+The second aspect involved providing the Arduino with an input signal that encoded information about the helicopter angle. The black knob is securely mounted onto the potentiometer such that when the helicopter rotates by an angle $$\theta$$ the potentiometer is rotated by an equivalent angle. Thus the potentiometer corresponds linearly with the helicopter angle. The red portion of the circuit in Fig. 4 shows the potentiometer circuit. The potentiometer outputs an analog signal that is converted to digital using the Analog-to-Digital Converter (ADC) built-in on the Arduino. 
 
 
 <table style="width:100%">
@@ -68,7 +68,7 @@ The second aspect involved providing the Arduino with an input signal that encod
 </table>
 *Table 1. Electrical Components*
 
-The digital values output by the potentiometer were mapped to corresponding angles by manually taking data points while the motor was off. The helicopter was held at $$0^{\circ}$$, $$90^{\circ}$$, and $$180^{\circ}$$ and the corresponding potentiometer value was read from the Arduino. The data was fit to a linear line of best fit, as shown in Fig.~\ref{fig:pot_curve}.
+The digital values output by the potentiometer were mapped to corresponding angles by manually taking data points while the motor was off. The helicopter was held at $$0^{\circ}$$, $$90^{\circ}$$, and $$180^{\circ}$$ and the corresponding potentiometer value was read from the Arduino. The data was fit to a linear line of best fit, as shown in Fig. 5.
 
 ![](/images/helicopter/pot_curve.png)
 *Figure 5. Data used to determine the mapping from the digital potentiometer signal to the corresponding helicopter angle. The error bars increased by a factor of 100x for visual clarity. The line of best fit was found to be $$\theta = 0.00595 * \text{value} - 1.5708$$ radians with an uncertainty of $$\pm$$ $$0.7^{\circ}$$.*
@@ -78,9 +78,9 @@ The mechanical apparatus, circuitry, and potentiometer mapping described above a
 ## Implementation of PID
 The recipe used to implement the controller was adapted from the advice provided by \cite{recipe}. The recipe employs a "trial and error" method in which values are chosen until the desired outcome is achieved. The proportional gain was set whilst the integral and derivative gains were set to zero. The integral gain was then set, and lastly the derivative gain.  The integral gain was chosen for steady-state error to go to zero. The derivative term was incorporated to minimize overshoot, ultimately allowing the controller to be more robust. 
 ### Proportional Term
-The proportional gain was set first by finding a gain that was small enough for oscillations to settle within 3.0 seconds and simultaneously amount to the smallest rise time within bounds set by the settling time requirement. A reference angle of $$90^{\circ}$$ was used when determining a value for $$K_p$$. Figures~\ref{fig:Kp50},~\ref{fig:Kp100}, and~\ref{fig:Kp200} show corresponding output for $$K_p$$ values of 50, 100, and 200, a reference angle of $$90^{\circ}$$. Other gains were experimented with, but these specific gains were selected to illustrate the key findings. 
+The proportional gain was set first by finding a gain that was small enough for oscillations to settle within 3.0 seconds and simultaneously amount to the smallest rise time within bounds set by the settling time requirement. A reference angle of $$90^{\circ}$$ was used when determining a value for $$K_p$$. Figures 6, 7, and 8, show corresponding output for $$K_p$$ values of 50, 100, and 200, a reference angle of $$90^{\circ}$$. Other gains were experimented with, but these specific gains were selected to illustrate the key findings. 
 
-The plots demonstrate how increasing $$K_p$$ will correspond to more overshoot and longer settling time, but with a faster rise time. Fig.~\ref{fig:Kp50} and Fig.~\ref{fig:Kp100} both reach steady-state within 3.0 seconds. On the other hand, Fig.~\ref{fig:Kp200} has oscillations for nearly the first 10 seconds, with amplitude ranging from $$0^{\circ} - 60^{\circ}$$. From this, it is concluded $$K_p = 200$$ is too large of a proportional gain to reach the settling time requirement. Though $$K_p = 50$$ satisfied the settling time requirement, its rise time was 0.8 seconds, compared to 0.3 seconds for the $$K_p = 100$$ case. Thus of the 3 $$K_p$$ values in Fig.~\ref{fig:Kp50}, Fig.~\ref{fig:Kp100}, and Fig.~\ref{fig:Kp200}, $$K_p = 100$$ was found to be the most ideal. 
+The plots demonstrate how increasing $$K_p$$ will correspond to more overshoot and longer settling time, but with a faster rise time. Fig. 6 and Fig. 7 both reach steady-state within 3.0 seconds. On the other hand, Fig. 8 has oscillations for nearly the first 10 seconds, with amplitude ranging from $$0^{\circ} - 60^{\circ}$$. From this, it is concluded $$K_p = 200$$ is too large of a proportional gain to reach the settling time requirement. Though $$K_p = 50$$ satisfied the settling time requirement, its rise time was 0.8 seconds, compared to 0.3 seconds for the $$K_p = 100$$ case. Thus of the 3 $$K_p$$ values in Fig. 6, Fig. 7, and Fig. 8, $$K_p = 100$$ was found to be the most ideal. 
 
 ![](/images/helicopter/kp50.png)
 *Figure 6. Output response versus time (blue) for a reference angle of $$90^{\circ}$$ with $$K_p = 50$$, and integral and derivative gains set to 0. The system has no observable oscillations prior to settling but outputs a large steady-error ($$75^{\circ}$$) with a slow rise-time (0.8 seconds).*
@@ -94,12 +94,12 @@ The plots demonstrate how increasing $$K_p$$ will correspond to more overshoot a
 Further experimentation continued to show that $$K_p = 100$$ produced the most ideal results. Note that for all $$K_p$$ values, there was significant steady-state error. Increasing $$K_p$$ reduced this error slightly but at the expense of introducing more oscillations and a longer settling time. The reasoning for this phenomenon is discussed in Section V. $$K_p$$ alone was insufficient as a controller.
 
 ### Integral Term
-After the $$K_p$$ value was determined, the value for $$K_i$$ was chosen by increasing it until the steady state error was reduced to zero. This was done with an angle of $$90^{\circ}$$. The starting value was arbitrarily chosen as $$K_i = 1$$ and was immediately successful in reducing steady-state error to zero. After experimentation, it was found that a value of $$K_i = 0.9$$ was more effective in minimizing overshoot and was still sufficient to provide zero steady-state error. The joint PI controller with optimally determined gains is illustrated in Fig.~\ref{fig:Kpki}. 
+After the $$K_p$$ value was determined, the value for $$K_i$$ was chosen by increasing it until the steady state error was reduced to zero. This was done with an angle of $$90^{\circ}$$. The starting value was arbitrarily chosen as $$K_i = 1$$ and was immediately successful in reducing steady-state error to zero. After experimentation, it was found that a value of $$K_i = 0.9$$ was more effective in minimizing overshoot and was still sufficient to provide zero steady-state error. The joint PI controller with optimally determined gains is illustrated in Fig. 9. 
 
 ![](/images/helicopter/KpKi.png)
 *Figure 9. PI controller with $$K_p = 100$$ and $$K_i = 0.9$$ for a reference of $$90^{\circ}$$. With integral control, steady-state error is 0.*
 
-Though the PI controller worked effectively for an input angle of $$90^{\circ}$$, as the reference angle increased above $$90^{\circ}$$, it became less robust to disturbances. Disturbances may include gusts of air or signal delays. Fig.~\ref{fig:120ref} demonstrates the response of the system with a reference angle of $$120^{\circ}$$. The system has two cycles of oscillations around the desired angle, but is unable to recover after a third oscillation and rises above $$180^{\circ}$$. At higher angles, the system is more sensitive to overshoot. The underlying physics that cause this are discussed in Section V. Derivative control is implemented to minimize overshoot, thereby allowing for a wider range of angles the controller accepts. 
+Though the PI controller worked effectively for an input angle of $$90^{\circ}$$, as the reference angle increased above $$90^{\circ}$$, it became less robust to disturbances. Disturbances may include gusts of air or signal delays. Fig. 10 demonstrates the response of the system with a reference angle of $$120^{\circ}$$. The system has two cycles of oscillations around the desired angle, but is unable to recover after a third oscillation and rises above $$180^{\circ}$$. At higher angles, the system is more sensitive to overshoot. The underlying physics that cause this are discussed in Section V. Derivative control is implemented to minimize overshoot, thereby allowing for a wider range of angles the controller accepts. 
 
 ![](/images/helicopter/120ref.png)
 *Figure 10. PI controller with $$K_p = 100$$ and $$K_i = 0.9$$ for a reference of $$120^{\circ}$$. The controller is unable to stabilize the system, and the helicopter flies above $$160^{\circ}$$ and eventually flips over $$180^{\circ}$$ (not pictured due to automatic shut-off at $$170^{\circ}$$).*
@@ -107,22 +107,22 @@ Though the PI controller worked effectively for an input angle of $$90^{\circ}$$
 ### Derivative Term
 The derivative gain was experimented with at a reference angle of $$\theta = 120^{\circ}$$. The PI controller was effective for reference angles below this, thus derivative gain was added with the goal of increasing controller robustness and ultimately allowing the controller to work for a wider range of reference angles. 
 
-When the derivative term was initially added for a value of $$K_d = 1$$, the output looked identical to the output from the PI controller in Fig.~\ref{fig:120ref}; the system remained largely unaffected by this term. The gain was increased up to $$K_d = 500$$ until a noticeable difference was encountered. However, rather than becoming more robust, as was intended, the controller was far more sensitive to noise. This caused the output angle to move sporadically. To diagnose the issue, the controller output PWM signal contributions from each term were plotted versus time, shown in Fig.~\ref{fig:pwms}. Even with a derivative gain $$K_d = 500$$, the derivative term is averaged around a PMW signal of 0. The average only slightly drops off after 12.5 seconds. More importantly, the noise in the derivative term compared to that of the proportional and integral terms is extremely high. The reason for the noise introduced by the derivative term will be discussed in Section V. 
+When the derivative term was initially added for a value of $$K_d = 1$$, the output looked identical to the output from the PI controller in Fig. 10; the system remained largely unaffected by this term. The gain was increased up to $$K_d = 500$$ until a noticeable difference was encountered. However, rather than becoming more robust, as was intended, the controller was far more sensitive to noise. This caused the output angle to move sporadically. To diagnose the issue, the controller output PWM signal contributions from each term were plotted versus time, shown in Fig. 11. Even with a derivative gain $$K_d = 500$$, the derivative term is averaged around a PMW signal of 0. The average only slightly drops off after 12.5 seconds. More importantly, the noise in the derivative term compared to that of the proportional and integral terms is extremely high. The reason for the noise introduced by the derivative term will be discussed in Section V. 
 
 ![](/images/helicopter/pwms.png)
 *Figure 11. Proportional, integral, and derivative contributions (blue, red, gold) and the total output signal (black) versus time. Proportional and integral contributions have very little noise. Derivative contribution is extremely noisy and yielding an average value of approximately zero for the duration of data collection.*
 
-The noise of the derivative term was reduced by applying a moving window average to the error prior to differentiating it. Rather than taking a given data point as the absolute value, the value for at a given instant is given by the average of the previous $$n$$ measurements, where $$n$$ is the size of the "window". This has the effect of smoothing noisy data \cite{mwa}. Fig.~\ref{fig:smooth} shows the result of applying a moving window average of size $$n = 6$$ to the data. 
+The noise of the derivative term was reduced by applying a moving window average to the error prior to differentiating it. Rather than taking a given data point as the absolute value, the value for at a given instant is given by the average of the previous $$n$$ measurements, where $$n$$ is the size of the "window". This has the effect of smoothing noisy data \cite{mwa}. Fig. 12 shows the result of applying a moving window average of size $$n = 6$$ to the data. 
 
 ![](/images/helicopter/smooth.png)
 *Figure 12. Output angle vs time for $$K_p = 100$$, $$K_i = 0.9$$, and $$K_d = 500$$. The raw data form of the output angle (blue) is extremely noise, with high and frequent spikes. The output angle to which a size $$n = 6$$ moving window average was applied (gold) is much smoother, with smaller and less frequent peaks.*
 
-By feeding the "smoothed" data into the D controller, derivative control worked as desired, ultimately allowing the controller to work for higher angles. Fig.~\ref{fig:125deg} shows the controller working for a reference angle of $$125^{\circ}$$. The output angle is very stable and stays within $$\pm$$2 degrees of the reference input. 
+By feeding the "smoothed" data into the D controller, derivative control worked as desired, ultimately allowing the controller to work for higher angles. Fig. 13 shows the controller working for a reference angle of $$125^{\circ}$$. The output angle is very stable and stays within $$\pm$$2 degrees of the reference input. 
 
 ![](/images/helicopter/125deg.png)
-*Figure 13. PID controller with D control using a moving-window-average of size $$n = 6$$ for a reference of $$125^{\circ}$$. The error stabilizes to within $$\pm 2^{\circ}$$ of the desired reference.*
+*Figure 13. PID controller with D control using a moving-window-average of size $$n = 6$$ for a reference of $$135^{\circ}$$. The error stabilizes to within $$\pm 2^{\circ}$$ of the desired reference.*
 
-The PID controller for a reference of $$135^{\circ}$$ is shown in Fig.~\ref{fig:135deg}. Though the controller was able to stabilize the system at this reference angle, the oscillations around the reference input are higher than those for the $$125^{\circ}$$ case. The reasoning for this, as well as additional methods to deal with it, are discussed in Section V. 
+The PID controller for a reference of $$135^{\circ}$$ is shown in Fig. 14. Though the controller was able to stabilize the system at this reference angle, the oscillations around the reference input are higher than those for the $$125^{\circ}$$ case. The reasoning for this, as well as additional methods to deal with it, are discussed in Section V. 
 
 ![](/images/helicopter/135deg.png)
 *Figure 14. PID controller with D control using a moving-window-average of size $$n = 6$$ for a reference of $$135^{\circ}$$. The error stabilizes to within $$\pm 15^{\circ}$$ of the desired reference.*
@@ -130,14 +130,7 @@ The PID controller for a reference of $$135^{\circ}$$ is shown in Fig.~\ref{fig:
 
 
 ## Discussion
-The effectiveness of the P, PI, and PID controllers discussed previously are summarized in Table~\ref
-
-| Controller | Gain Values | Range of Angles |
-| ---------- | ----------- | --------------- |
-|P   | $$K_p = 100$$, $$K_i = 0.0$$, $$K_d = 0.00$$ | N/A  |
-|PI     | $$K_p = 100$$, $$K_i = 0.9$$, $$K_d = 0.00$$| $$0^{\circ} - 115^{\circ}$$|
-|PID |$$K_p = 100$$, $$K_i = 0.9$$, $$K_d = 500$$ |$$0^{\circ} - 135^{\circ}$$ |
-*Table 2. Effectiveness of Different Controllers*
+The effectiveness of the P, PI, and PID controllers discussed previously are summarized in Table 2.
 
 <table style="width:100%">
   <tr>
@@ -161,20 +154,20 @@ The effectiveness of the P, PI, and PID controllers discussed previously are sum
     <td>$$0^{\circ} - 135^{\circ}$$</td>
   </tr>
 </table>
+*Table 2. Effectiveness of Different Controllers*
 
-
-Proportional control was insufficient in producing an output angle that matched the reference. As the error decreased, the output PWM signal decreased proportionally. In this system, the steady-state error occurs at a point when the thrust torque provided by the motor is in equilibrium with the torque due to gravity. For example, Fig.~\ref{fig:kpv} shows the output angle and the output PWM signal on the same plot for $$K_p = 100$$. At around 2.0 seconds, we see that a PWM signal of 100 causes the motor to thrust at a force exactly equal to the torque due to gravity when the angle is at around $$25^{\circ}$$. Since the two are in equilibrium, the error is constant, and the output PWM signal therefore remains fixed. This phenomenon will occur regardless of the reference angle or the proportional gain \cite{ess}. Integral control must be introduced to eliminate steady-state error. 
+Proportional control was insufficient in producing an output angle that matched the reference. As the error decreased, the output PWM signal decreased proportionally. In this system, the steady-state error occurs at a point when the thrust torque provided by the motor is in equilibrium with the torque due to gravity. For example, Fig. 15 shows the output angle and the output PWM signal on the same plot for $$K_p = 100$$. At around 2.0 seconds, we see that a PWM signal of 100 causes the motor to thrust at a force exactly equal to the torque due to gravity when the angle is at around $$25^{\circ}$$. Since the two are in equilibrium, the error is constant, and the output PWM signal therefore remains fixed. This phenomenon will occur regardless of the reference angle or the proportional gain \cite{ess}. Integral control must be introduced to eliminate steady-state error. 
 
 ![](/images/helicopter/Kpvoltage.png)
 *Figure 15. Output angle in degrees and PWM signal versus time for a P controller with $$K_p = 100$$ and reference of $$90^{\circ}$$. At approximately 3 seconds, the thurst torque is in equilibrium with the gravitational torque, and the PWM signal and error therefore remain perpetually fixed with a nonzero steady-state error.*
 
-Integral control reduces the steady-state error to zero by accumulating the error over time. Unlike proportional control, integral control produces a non-zero output signal even for an input error of 0. Fig.~\ref{fig:PIv} illustrates how proportional and integral control sum together to produce an output PWM signal that enables the steady-state error to reach zero. As the error reduces over time, the proportional control gradually falls to zero. However, the integral control is nonzero due to the error that was accumulated over the first ~12 seconds. This ultimately allows the final PWM output signal to produce a thrust torque equal to the torque due to gravity at the desired angle, enabling the steady-state error to be maintained at zero. 
+Integral control reduces the steady-state error to zero by accumulating the error over time. Unlike proportional control, integral control produces a non-zero output signal even for an input error of 0. Fig. 16 illustrates how proportional and integral control sum together to produce an output PWM signal that enables the steady-state error to reach zero. As the error reduces over time, the proportional control gradually falls to zero. However, the integral control is nonzero due to the error that was accumulated over the first ~12 seconds. This ultimately allows the final PWM output signal to produce a thrust torque equal to the torque due to gravity at the desired angle, enabling the steady-state error to be maintained at zero. 
 
 ![](/images/helicopter/PIv.png)
 *Figure 16. PWM outputs for a PI controller with $$K_p = 100$$ and $$K_i = 0.9$$. Proportional contribution (blue) falls to zero as the controller reaches steady-state. Integral contribution (black) accumulates over-time, allowing controller to reach zero steady-state error. Total output (gold) is the sum of the two contributions.*
 
 
-The PI controller was ultimately unsuccessful for angles above $$110^{\circ}$$. Fig.~\ref{fig:fbd} shows the 2 main forces acting on the motor (the damping force is not pictured for simplicity). One can use trigonometry to show that the torque due to gravity $$\tau_g$$ is
+The PI controller was ultimately unsuccessful for angles above $$110^{\circ}$$. Fig. 17 shows the 2 main forces acting on the motor (the damping force is not pictured for simplicity). One can use trigonometry to show that the torque due to gravity $$\tau_g$$ is
 
 $$\tau_g = |\vec{F}_g|\ell sin\theta,$$
 
@@ -185,7 +178,7 @@ where $$\vec{F}_g$$ is the force due to gravity and $$\ell$$ is the length of th
 
 Derivative control addresses this phenomenon by reacting to the rate of change of the error. If the error is increasing or decreasing rapidly, derivative control will cause the total output PWM signal to adjust accordingly. 
 
-Even with PID control, the derivative term lost robustness at higher angles. For a reference angle of $$125^{\circ}$$ the output angle stabilized within $$\pm 2^{\circ}$$ of the desired angle. For a reference of $$135^{\circ}$$ the output angle stabilized within $$\pm 10^{\circ}$$, demonstrating it was much more sensitive to noise. This again can be related to the free body diagram in Fig.~\ref{fig:fbd}. The larger angle corresponded with less gravitational torque, causing the output thrust to be the dominating term. Due to this, the output PWM signal was more sensitive to small disturbances, such as air gusts, causing a higher amplitude of oscillations. 
+Even with PID control, the derivative term lost robustness at higher angles. For a reference angle of $$125^{\circ}$$ the output angle stabilized within $$\pm 2^{\circ}$$ of the desired angle. For a reference of $$135^{\circ}$$ the output angle stabilized within $$\pm 10^{\circ}$$, demonstrating it was much more sensitive to noise. This again can be related to the free body diagram in Fig. 17. The larger angle corresponded with less gravitational torque, causing the output thrust to be the dominating term. Due to this, the output PWM signal was more sensitive to small disturbances, such as air gusts, causing a higher amplitude of oscillations. 
 
 The derivative term was also shown to introduce additional noise into the system. This can be explained mathematically. Consider a noisy error represented as a sine wave with frequency $$\omega$$ and amplitude $$e_0$$:
 
