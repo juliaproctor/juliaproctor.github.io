@@ -119,18 +119,6 @@ The calculated GDOP and PDOP values for the different satellite combinations are
 
 Additional sources of error from the [2 9 10] combination is elevation of SVID 9, which from Table I is roughly 5 degrees. At a low elevation, the satellite signal must propagate further through the ionosphere and neutral atmosphere. Since this solution does not incorporate ionosphere and neutral atmosphere delays, the solution accuracy is particularly susceptible to satellites with low elevation. 
 
-\begin{table}[htp!]
-\centering
-\caption{GDOP and PDOP for different satellite combinations}
-\begin{tabular}{c r r}
-\hline
-\textbf{Combo} & \textbf{GDOP} & \textbf{PDOP}\\
-04 10 17 & 2.5454 & 2.4370\\
-02 09 10 & 10.6127 & 9.1117\\
-\hline
-\end{tabular}
-\label{tab:DOP1}
-\end{table}
 
 <table style="width:100%">
   <tr>
