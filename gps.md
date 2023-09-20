@@ -10,8 +10,7 @@ The aim of this project is to develop and analyze a navigation solution for a mo
 ## Code and Methodology
 For the two dimensional problem it is convenient to work in the local coordinates frame. Therefore the range is given by 
 
-$$\rho^j = \sqrt{(X^j-x_{\text{local}})^2 + (Y^j-y_{\text{local}})^2+(Z^j - (R_e+h))^2}$$
-
+$$\rho^j = \sqrt{(X^j-x_{\text{local}})^2 + (Y^j-y_{\text{local}})^2+(Z^j - (R_e+h))^2} ~~~~~ (1) $$ 
 where the satellite locations were calculated from the ephemerides, corrected for the earth’s rotation, and transformed into the local coordinate system. The location of the receiver in local coordinates is simply `[0;0;Re+h]`
 where $R_e$ is the radius of the earth at the location of the observer and $h$ is the constant altitude. Like the 3D solution, the observer location begins with an initial guess and is iterated until convergence for $x = A^{-1}l$ using Eq. 2. 
 
@@ -22,11 +21,11 @@ $$
         P^1 + c \delta^1 - \rho_0^1 \\
         P^2 + c \delta^2 - \rho_0^2 \\
         P^3 + c \delta^3 - \rho_0^3 
-    \end{bmatrix}
+    \end{bmatrix} ~~~~~ (2)
 $$
 
 The provided `navsolnlocal.m` formats the ephemeris and observable data and uses `pseudocalc.m` to correct the pseudorange for the transmitter clock error before solving for the receiver location in `solvePos.m`. Thus, in the `solvePos.m` file where the iteration to the solution occurs, $l$ is simply 
-$$    l = P^j - \rho_0^j
+$$    l = P^j - \rho_0^j ~~~~~ (3)
 $$
 
 In order to efficiently manipulate inputs, I made a script called `runCalcs.m` that followed a similar procedure as `navsolnlocal.m` but allowed for greater tunability. Using a for-loop, the script saves the latitude-longitude solution from the 2D and/or 3D solution into an array that can be exported as a .csv file for a specified range of samples. Additionally, there is logic to neglect the solution when indexing through the array if one of the chosen SVIDs is not observable for a given sample. Lastly, the created `runCalcs.m` script also saves the GPS time, GDOP, and PDOP for the 2D navigation solution, in order to aid in analysis. The code for all the mentioned scripts as well as completed code templates can be found in the appendix. 
@@ -105,14 +104,14 @@ The satellite combination that forms a line was chosen to be [2 9 10] for sample
 ![](/images/gps/2_9_10.png)
 *Figure 3. 2D navigation solution with satellite combo [2 9 10] (blue) for samples 190 - 804 and combo [4 10 17] (red).*
 
-As expected, the solution from [2 9 10] is far less accurate than that from [4 10 17]. Qualitatively, it can be seen that the blue line is far more jittery than the red. Additionally, the blue line does not follow the roads as closely as the red. As the car goes down Catherine Street, Buffalo Street, and Court Street the blue line is significantly off of the road pictured on the map. Moreover, by the NY34 sign the blue line is significantly off the route and is very jittery. The differences can be quantified by dilution of precision. The dilution of precision was calculated for both satellite combinations at GPS time 403681 seconds. See code in `runCalcs.m` attached in the Appendix. In the two dimensional case, the GDOP and PDOP are given by Eq. 1 and Eq. 2.
+As expected, the solution from [2 9 10] is far less accurate than that from [4 10 17]. Qualitatively, it can be seen that the blue line is far more jittery than the red. Additionally, the blue line does not follow the roads as closely as the red. As the car goes down Catherine Street, Buffalo Street, and Court Street the blue line is significantly off of the road pictured on the map. Moreover, by the NY34 sign the blue line is significantly off the route and is very jittery. The differences can be quantified by dilution of precision. The dilution of precision was calculated for both satellite combinations at GPS time 403681 seconds. See code in `runCalcs.m` attached in the Appendix. In the two dimensional case, the GDOP and PDOP are given by Eq. 4 and Eq. 5.
 
 $$
-    GDOP = \sqrt{q_{xx} + q_{yy} + q_{tt}} ~~~~~~~~~~~~(1)
+    GDOP = \sqrt{q_{xx} + q_{yy} + q_{tt}} ~~~~~~~~~~~~(4)
 $$
 
 $$
-    PDOP = \sqrt{q_{xx} + q_{yy}}  ~~~~~~~~~~~~ (2)
+    PDOP = \sqrt{q_{xx} + q_{yy}}  ~~~~~~~~~~~~ (4)
 $$
 
 The calculated GDOP and PDOP values for the different satellite combinations are shown in Table 2. Consistent with our expectations, the GDOP and PDOP values of the second combination, those that form a line in the sky, is significantly higher than those of the original combination. The GDOP value for [2 9 10] is 3.17 times larger than it is for [4 10 17] and the PDOP value is 2.74 times larger. This confirms the hypothesis that satellites that form a line in the sky would decrease solution precision. This was seen qualitatively through the GPS visualizer and now quantitatively with dilution of precision.
