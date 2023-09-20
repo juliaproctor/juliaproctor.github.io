@@ -4,6 +4,9 @@
 <loc>http://localhost:4000/aboutme/</loc>
 </url>
 <url>
+<loc>http://localhost:4000/projects/gps</loc>
+</url>
+<url>
 <loc>http://localhost:4000/projects/helicopter</loc>
 </url>
 <url>
