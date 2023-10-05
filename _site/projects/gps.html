@@ -192,10 +192,18 @@
         }, \
        \
         { \
-          "title"    : "Welcome!", \
-          "desc"     : "Welcome!", \
+          "title"    : "Welcome to my site!", \
+          "desc"     : "Welcome to my site!", \
           "category" : "page", \
           "url"      : "/", \
+          "date"     : "January 1, 1970" \
+        }, \
+       \
+        { \
+          "title"    : "Overview of Projects", \
+          "desc"     : "Overview of Projects", \
+          "category" : "page", \
+          "url"      : "/projects/about", \
           "date"     : "January 1, 1970" \
         }, \
        \
@@ -265,9 +273,8 @@
 <h2 id="code-and-methodology">Code and Methodology</h2>
 <p>For the two dimensional problem it is convenient to work in the local coordinates frame. Therefore the range is given by</p>
 
-\[\rho^j = \sqrt{(X^j-x_{\text{local}})^2 + (Y^j-y_{\text{local}})^2+(Z^j - (R_e+h))^2}\]
-
-<p>where the satellite locations were calculated from the ephemerides, corrected for the earth’s rotation, and transformed into the local coordinate system. The location of the receiver in local coordinates is simply <code class="language-plaintext highlighter-rouge">[0;0;Re+h]</code>
+<p>\(\rho^j = \sqrt{(X^j-x_{\text{local}})^2 + (Y^j-y_{\text{local}})^2+(Z^j - (R_e+h))^2} ~~~~~ (1)\) 
+where the satellite locations were calculated from the ephemerides, corrected for the earth’s rotation, and transformed into the local coordinate system. The location of the receiver in local coordinates is simply <code class="language-plaintext highlighter-rouge">[0;0;Re+h]</code>
 where $R_e$ is the radius of the earth at the location of the observer and $h$ is the constant altitude. Like the 3D solution, the observer location begins with an initial guess and is iterated until convergence for $x = A^{-1}l$ using Eq. 2.</p>
 
 \[x = \begin{bmatrix} \Delta x_{local} \\ \Delta y_{local} \\ \delta_R\end{bmatrix} A = \begin{bmatrix}
@@ -276,10 +283,10 @@ where $R_e$ is the radius of the earth at the location of the observer and $h$ i
         P^1 + c \delta^1 - \rho_0^1 \\
         P^2 + c \delta^2 - \rho_0^2 \\
         P^3 + c \delta^3 - \rho_0^3 
-    \end{bmatrix}\]
+    \end{bmatrix} ~~~~~ (2)\]
 
 <p>The provided <code class="language-plaintext highlighter-rouge">navsolnlocal.m</code> formats the ephemeris and observable data and uses <code class="language-plaintext highlighter-rouge">pseudocalc.m</code> to correct the pseudorange for the transmitter clock error before solving for the receiver location in <code class="language-plaintext highlighter-rouge">solvePos.m</code>. Thus, in the <code class="language-plaintext highlighter-rouge">solvePos.m</code> file where the iteration to the solution occurs, $l$ is simply 
-\(l = P^j - \rho_0^j\)</p>
+\(l = P^j - \rho_0^j ~~~~~ (3)\)</p>
 
 <p>In order to efficiently manipulate inputs, I made a script called <code class="language-plaintext highlighter-rouge">runCalcs.m</code> that followed a similar procedure as <code class="language-plaintext highlighter-rouge">navsolnlocal.m</code> but allowed for greater tunability. Using a for-loop, the script saves the latitude-longitude solution from the 2D and/or 3D solution into an array that can be exported as a .csv file for a specified range of samples. Additionally, there is logic to neglect the solution when indexing through the array if one of the chosen SVIDs is not observable for a given sample. Lastly, the created <code class="language-plaintext highlighter-rouge">runCalcs.m</code> script also saves the GPS time, GDOP, and PDOP for the 2D navigation solution, in order to aid in analysis. The code for all the mentioned scripts as well as completed code templates can be found in the appendix.</p>
 
@@ -356,28 +363,15 @@ where $R_e$ is the radius of the earth at the location of the observer and $h$ i
 <p><img src="/images/gps/2_9_10.png" alt="" />
 <em>Figure 3. 2D navigation solution with satellite combo [2 9 10] (blue) for samples 190 - 804 and combo [4 10 17] (red).</em></p>
 
-<p>As expected, the solution from [2 9 10] is far less accurate than that from [4 10 17]. Qualitatively, it can be seen that the blue line is far more jittery than the red. Additionally, the blue line does not follow the roads as closely as the red. As the car goes down Catherine Street, Buffalo Street, and Court Street the blue line is significantly off of the road pictured on the map. Moreover, by the NY34 sign the blue line is significantly off the route and is very jittery. The differences can be quantified by dilution of precision. The dilution of precision was calculated for both satellite combinations at GPS time 403681 seconds. See code in <code class="language-plaintext highlighter-rouge">runCalcs.m</code> attached in the Appendix. In the two dimensional case, the GDOP and PDOP are given by Eq. 1 and Eq. 2.</p>
+<p>As expected, the solution from [2 9 10] is far less accurate than that from [4 10 17]. Qualitatively, it can be seen that the blue line is far more jittery than the red. Additionally, the blue line does not follow the roads as closely as the red. As the car goes down Catherine Street, Buffalo Street, and Court Street the blue line is significantly off of the road pictured on the map. Moreover, by the NY34 sign the blue line is significantly off the route and is very jittery. The differences can be quantified by dilution of precision. The dilution of precision was calculated for both satellite combinations at GPS time 403681 seconds. See code in <code class="language-plaintext highlighter-rouge">runCalcs.m</code> attached in the Appendix. In the two dimensional case, the GDOP and PDOP are given by Eq. 4 and Eq. 5.</p>
 
-\[GDOP = \sqrt{q_{xx} + q_{yy} + q_{tt}} ~~~~~~~~~~~~(1)\]
+\[GDOP = \sqrt{q_{xx} + q_{yy} + q_{tt}} ~~~~~~~~~~~~(4)\]
 
-\[PDOP = \sqrt{q_{xx} + q_{yy}}  ~~~~~~~~~~~~ (2)\]
+\[PDOP = \sqrt{q_{xx} + q_{yy}}  ~~~~~~~~~~~~ (4)\]
 
 <p>The calculated GDOP and PDOP values for the different satellite combinations are shown in Table 2. Consistent with our expectations, the GDOP and PDOP values of the second combination, those that form a line in the sky, is significantly higher than those of the original combination. The GDOP value for [2 9 10] is 3.17 times larger than it is for [4 10 17] and the PDOP value is 2.74 times larger. This confirms the hypothesis that satellites that form a line in the sky would decrease solution precision. This was seen qualitatively through the GPS visualizer and now quantitatively with dilution of precision.</p>
 
 <p>Additional sources of error from the [2 9 10] combination is elevation of SVID 9, which from Table I is roughly 5 degrees. At a low elevation, the satellite signal must propagate further through the ionosphere and neutral atmosphere. Since this solution does not incorporate ionosphere and neutral atmosphere delays, the solution accuracy is particularly susceptible to satellites with low elevation.</p>
-
-<p>\begin{table}[htp!]
-\centering
-\caption{GDOP and PDOP for different satellite combinations}
-\begin{tabular}{c r r}
-\hline
-\textbf{Combo} &amp; \textbf{GDOP} &amp; \textbf{PDOP}<br />
-04 10 17 &amp; 2.5454 &amp; 2.4370<br />
-02 09 10 &amp; 10.6127 &amp; 9.1117<br />
-\hline
-\end{tabular}
-\label{tab:DOP1}
-\end{table}</p>
 
 <table style="width:100%">
   <tr>

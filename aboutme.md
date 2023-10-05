@@ -3,7 +3,7 @@ layout: page
 title: About me
 ---
 
-My name is Julia Proctor. I made this website to showcase some of my favorite projects and problems I've worked on. The website is still in the works, but feel free to check out the links under the "PROJECTS" tab.
+Hi! My name is Julia Proctor. I made this website to showcase some of my favorite projects and problems I've worked on.
 
 ### My background
 
