@@ -1,7 +1,7 @@
 ---
 layout: page
 title: Two-Dimensional Navigation Solution using GPS
-permalink: /projects/gps
+permalink: /projects/gps/
 usemathjax: true
 ---
 ## Introduction

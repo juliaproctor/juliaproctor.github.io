@@ -1,7 +1,7 @@
 ---
 layout: page
 title: PID for a 1-DoF Helicopter
-permalink: /projects/helicopter
+permalink: /projects/helicopter/
 usemathjax: true
 ---
 ## Abstract
